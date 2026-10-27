@@ -2,6 +2,8 @@
 
 このディレクトリは、公開ソースコードとチーム報告書の非個人情報部分を照合し、設計と実装を機能別に整理したものです。「目標」「実装」「検証」「未検証」を同じ言葉で扱わないことを編集原則としています。
 
+全体から読む場合は [Project Overview](../OVERVIEW.md)、コードを確認する場合は [Python](../python/README.md) / [Mbed](../mbed/README.md)、物理構成は [Electronics](../electronics/README.md) / [Hardware](../hardware/README.md) が入口です。実行条件とローカル検査は[開発・再検証ガイド](development-guide.md)にまとめています。
+
 | # | テーマ | 要点 |
 |---:|---|---|
 | 01 | [システムアーキテクチャ](01-system-architecture.md) | Raspberry PiとSTM32の責務分離、情報流、制御流 |

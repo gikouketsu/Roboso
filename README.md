@@ -11,6 +11,35 @@ USBカメラの画像から色領域を検出し、Raspberry PiからSTM32への
 > [!IMPORTANT]
 > 本リポジトリは実験時点のコードと資料を、作品集向けに整理したものです。回収機構は未完了、投擲精度と長時間稼働は未検証、STM32 v3は未テストです。公開コードにはchecksum、再送、queueは実装されていません。
 
+## ここから読む
+
+| 知りたいこと | 入口 |
+|---|---|
+| プロジェクト全体と開発上の判断 | **[Project Overview](OVERVIEW.md)** |
+| Raspberry Piの画像処理・通信コード | **[Python](python/README.md)** |
+| STM32の制御・PWM・バージョン差 | **[Mbed Firmware](mbed/README.md)** |
+| 電子回路・基板・電源・信号 | **[Electronics](electronics/README.md)** |
+| 車体・3Dプリント機構・実機統合 | **[Hardware](hardware/README.md)** |
+| 実装の根拠と試験・故障分析 | **[Engineering Docs](docs/README.md)** |
+
+## リポジトリ構成
+
+```text
+Roboso/
+├── OVERVIEW.md             # 開発全体の見取り図
+├── python/                 # 撮像・認識・SPI送信 + オフライン確認ツール
+│   ├── camera/             # 撮像・偏差算出の初期試作
+│   ├── spi/                # Raspberry Pi側の主実装
+│   └── tools/              # 新規のbyte変換確認ツール
+├── mbed/                   # STM32ファームウェア v1 / v2 / v3
+├── electronics/            # PCB・信号表・電源・部品情報
+├── hardware/               # 機械設計・実機統合
+├── docs/                   # 分野別技術文書・試験・エビデンス
+├── media/                  # 報告から抽出した実物・設計画像と出典
+├── tools/                  # 構文とローカルリンクの検査
+└── tests/                  # 新規のオフライン補助コードのテスト
+```
+
 ## プロジェクト概要
 
 | 項目 | 内容 |
@@ -71,6 +100,15 @@ flowchart LR
 - 閾値制御 → P制御相当 → 未テストのPID案という制御ロジックの変遷
 - 機構、PCB、電源、通信、制御をまたぐ統合と故障分析
 
+## 機構と電子回路
+
+| 3Dプリント発射機構 | STM32拡張基板 |
+|---|---|
+| ![発射機構の設計と試作](media/mechanics/launcher-cad-and-prototype.jpg) | ![拡張基板のレイアウト](media/electronics/stm32-expansion-pcb-layout.jpg) |
+| [ラック・ピニオンの試作と改修](hardware/mechanical/README.md) | [信号・電源・ドライバ回路](electronics/README.md) |
+
+掲載物は当時の報告からの画像です。元CAD・回路図・EDA・製造データは未提供です。
+
 ## ドキュメント
 
 | 分野 | ドキュメント |
@@ -100,6 +138,18 @@ flowchart LR
 - レポート内の配線と公開コードのピン定義に合う実機
 
 現在はハードウェア、Mbedプロジェクト設定、元のCAD/EDAファイルが公開されていないため、第三者がこのリポジトリだけで完全再現できる状態ではありません。
+
+## 実機を使わず確認する
+
+Python 3.10以上の標準ライブラリだけで、今回追加した開発補助を実行できます。
+
+```sh
+python tools/check_repository.py
+python -m unittest discover -s tests -v
+python python/tools/inspect_packet.py encode -51 -39
+```
+
+最後のコマンドは偏差の送信表現 `[205, 217]` をJSONで表示します。SPI・カメラ・モータは起動しません。この補助ツールとCIは資料整備時の新規追加で、当時の実機搭載機能や実測成果ではありません。[開発・再検証ガイド](docs/development-guide.md)
 
 ## 資料・知的財産・プライバシー
 

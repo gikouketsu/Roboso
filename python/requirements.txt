@@ -1,0 +1,5 @@
+# Source import inventory; historical versions were not recorded.
+# Revalidate on Raspberry Pi / Linux. Not needed for offline inspection tools.
+numpy
+opencv-python
+spidev
